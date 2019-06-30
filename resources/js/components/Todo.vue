@@ -3,6 +3,12 @@
 		<div class="row">
 			<div class="col-md-10 mx-auto">
 				<h2>My Todos</h2>
+				
+
+				<router-link :to='{ name: "create" }' class="btn btn-primary">
+					Create	
+				</router-link>
+
 				<table class="table">
 					<thead>
 						<tr>
@@ -18,9 +24,13 @@
 							<td>{{ todo.description }}</td>
 							<td></td>
 							<td>
-								<a href="#" class="btn btn-success">
+								<a href="javascript:void(0)" @click="setToDone(todo.id)" class="btn btn-success">
 									Done
 								</a>
+
+								<router-link :to="{name: 'edit', params: { id: todo.id }}" class='btn btn-primary'>
+									Edit
+								</router-link>
 							</td>
 						</tr>
 					</tbody>
@@ -40,7 +50,10 @@
 			}
 		},
 		methods: {
-
+			setToDone(todo_id)
+			{
+				alert(todo_id);
+			}
 		},
 		async created()
 		{

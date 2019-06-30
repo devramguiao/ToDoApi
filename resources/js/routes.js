@@ -7,15 +7,18 @@ export default {
 	routes: [
 		{
 			path: '/',
-			component: Todo
+			component: Todo,
+			name: 'todo'
 		},
 		{
 			path: '/create',
-			component: Create
+			component: Create,
+			name: 'create'
 		},
 		{
-			path: '/edit',
-			component: Edit
+			path: '/edit/:id',
+			component: Edit,
+			name: 'edit'
 		}
 	]
 }

@@ -1850,13 +1850,54 @@ module.exports = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
 //
 //
 //
-/* harmony default export */ __webpack_exports__["default"] = ({});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      task: {}
+    };
+  },
+  methods: {
+    onSubmit: function onSubmit(e) {
+      e.preventDefault();
+      var self = this;
+      var response = axios__WEBPACK_IMPORTED_MODULE_0___default.a.post("http://todoapi.test/api/tasks", self.task, {
+        headers: {
+          'Authorization': localStorage.getItem('token')
+        }
+      }).then(function (data) {
+        self.$router.push('/');
+      });
+    }
+  }
+});
 
 /***/ }),
 
@@ -1869,13 +1910,53 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
 //
 //
 //
-/* harmony default export */ __webpack_exports__["default"] = ({});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      task: {}
+    };
+  },
+  methods: {
+    onSubmit: function onSubmit(e) {}
+  },
+  created: function created() {
+    var self = this; // to get the parameter id in the URL
+
+    var task_id = self.$route.params.id; // to set value in for data-model binding
+
+    self.task.title = "This is a title";
+    self.task.description = "This is a description";
+  }
+});
 
 /***/ }),
 
@@ -1930,6 +2011,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -1937,7 +2028,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       todos: []
     };
   },
-  methods: {},
+  methods: {
+    setToDone: function setToDone(todo_id) {
+      alert(todo_id);
+    }
+  },
   created: function () {
     var _created = _asyncToGenerator(
     /*#__PURE__*/
@@ -3220,14 +3315,80 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", [
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-md-6 mx-auto" }, [
+        _c("h2", [_vm._v("Create New Task")]),
+        _vm._v(" "),
+        _c("form", { on: { submit: _vm.onSubmit } }, [
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "" } }, [_vm._v("Title")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.task.title,
+                  expression: "task.title"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { type: "text" },
+              domProps: { value: _vm.task.title },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.task, "title", $event.target.value)
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "" } }, [_vm._v("Description")]),
+            _vm._v(" "),
+            _c("textarea", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.task.description,
+                  expression: "task.description"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { rows: "5" },
+              domProps: { value: _vm.task.description },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.task, "description", $event.target.value)
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _vm._m(0)
+        ])
+      ])
+    ])
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", [_c("h1", [_vm._v("Create")])])
+    return _c("div", { staticClass: "form-group" }, [
+      _c("button", { staticClass: "btn btn-primary" }, [
+        _vm._v("\n\t\t\t\t\t\tAdd\n\t\t\t\t\t")
+      ])
+    ])
   }
 ]
 render._withStripped = true
@@ -3251,14 +3412,102 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", [
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-md-6 mx-auto" }, [
+        _c("h2", [_vm._v("Edit Task")]),
+        _vm._v(" "),
+        _c("form", { on: { submit: _vm.onSubmit } }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.task._method,
+                expression: "task._method"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { type: "text", value: "PUT" },
+            domProps: { value: _vm.task._method },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.task, "_method", $event.target.value)
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "" } }, [_vm._v("Title")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.task.title,
+                  expression: "task.title"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { type: "text" },
+              domProps: { value: _vm.task.title },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.task, "title", $event.target.value)
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "" } }, [_vm._v("Description")]),
+            _vm._v(" "),
+            _c("textarea", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.task.description,
+                  expression: "task.description"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { rows: "5" },
+              domProps: { value: _vm.task.description },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.task, "description", $event.target.value)
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _vm._m(0)
+        ])
+      ])
+    ])
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", [_c("h1", [_vm._v("Edit")])])
+    return _c("div", { staticClass: "form-group" }, [
+      _c("button", { staticClass: "btn btn-primary" }, [
+        _vm._v("\n\t\t\t\t\t\tEdit\n\t\t\t\t\t")
+      ])
+    ])
   }
 ]
 render._withStripped = true
@@ -3284,29 +3533,72 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", [
     _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-md-10 mx-auto" }, [
-        _c("h2", [_vm._v("My Todos")]),
-        _vm._v(" "),
-        _c("table", { staticClass: "table" }, [
-          _vm._m(0),
+      _c(
+        "div",
+        { staticClass: "col-md-10 mx-auto" },
+        [
+          _c("h2", [_vm._v("My Todos")]),
           _vm._v(" "),
           _c(
-            "tbody",
-            _vm._l(_vm.todos, function(todo) {
-              return _c("tr", [
-                _c("td", [_vm._v(_vm._s(todo.title))]),
-                _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(todo.description))]),
-                _vm._v(" "),
-                _c("td"),
-                _vm._v(" "),
-                _vm._m(1, true)
-              ])
-            }),
-            0
-          )
-        ])
-      ])
+            "router-link",
+            {
+              staticClass: "btn btn-primary",
+              attrs: { to: { name: "create" } }
+            },
+            [_vm._v("\n\t\t\t\tCreate\t\n\t\t\t")]
+          ),
+          _vm._v(" "),
+          _c("table", { staticClass: "table" }, [
+            _vm._m(0),
+            _vm._v(" "),
+            _c(
+              "tbody",
+              _vm._l(_vm.todos, function(todo) {
+                return _c("tr", [
+                  _c("td", [_vm._v(_vm._s(todo.title))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(todo.description))]),
+                  _vm._v(" "),
+                  _c("td"),
+                  _vm._v(" "),
+                  _c(
+                    "td",
+                    [
+                      _c(
+                        "a",
+                        {
+                          staticClass: "btn btn-success",
+                          attrs: { href: "javascript:void(0)" },
+                          on: {
+                            click: function($event) {
+                              return _vm.setToDone(todo.id)
+                            }
+                          }
+                        },
+                        [_vm._v("\n\t\t\t\t\t\t\t\tDone\n\t\t\t\t\t\t\t")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "router-link",
+                        {
+                          staticClass: "btn btn-primary",
+                          attrs: {
+                            to: { name: "edit", params: { id: todo.id } }
+                          }
+                        },
+                        [_vm._v("\n\t\t\t\t\t\t\t\tEdit\n\t\t\t\t\t\t\t")]
+                      )
+                    ],
+                    1
+                  )
+                ])
+              }),
+              0
+            )
+          ])
+        ],
+        1
+      )
     ])
   ])
 }
@@ -3324,16 +3616,6 @@ var staticRenderFns = [
         _c("th", [_vm._v("Status")]),
         _vm._v(" "),
         _c("th", [_vm._v("Action")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", [
-      _c("a", { staticClass: "btn btn-success", attrs: { href: "#" } }, [
-        _vm._v("\n\t\t\t\t\t\t\t\tDone\n\t\t\t\t\t\t\t")
       ])
     ])
   }
@@ -18380,13 +18662,16 @@ __webpack_require__.r(__webpack_exports__);
   mode: "history",
   routes: [{
     path: '/',
-    component: _components_Todo__WEBPACK_IMPORTED_MODULE_0__["default"]
+    component: _components_Todo__WEBPACK_IMPORTED_MODULE_0__["default"],
+    name: 'todo'
   }, {
     path: '/create',
-    component: _components_Create__WEBPACK_IMPORTED_MODULE_1__["default"]
+    component: _components_Create__WEBPACK_IMPORTED_MODULE_1__["default"],
+    name: 'create'
   }, {
-    path: '/edit',
-    component: _components_Edit__WEBPACK_IMPORTED_MODULE_2__["default"]
+    path: '/edit/:id',
+    component: _components_Edit__WEBPACK_IMPORTED_MODULE_2__["default"],
+    name: 'edit'
   }]
 });
 
