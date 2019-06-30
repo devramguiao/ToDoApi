@@ -1,9 +1,5 @@
 <?php
 
-Route::get('generate', function() {
-	echo bcrypt("12312312");
-});
-
-Route::get('/', function () {
+Route::get('/{any}', function () {
     return view('welcome');
-});
+})->where('any', '.*');
