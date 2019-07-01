@@ -1937,24 +1937,42 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      task: {}
+      task: {
+        _method: "PUT",
+        title: "",
+        description: ""
+      }
     };
   },
   methods: {
-    onSubmit: function onSubmit(e) {}
+    onSubmit: function onSubmit(e) {
+      e.preventDefault();
+      var self = this;
+      var task_id = self.$route.params.task_id;
+      var response = axios__WEBPACK_IMPORTED_MODULE_0___default.a.post("http://todoapi.test/api/tasks/" + task_id, self.task, {
+        headers: {
+          'Authorization': localStorage.getItem('token')
+        }
+      }).then(function (data) {
+        self.$router.push('/');
+      });
+    }
   },
   created: function created() {
-    var self = this; // to get the parameter id in the URL
-
-    var task_id = self.$route.params.id; // to set value in for data-model binding
-
-    self.task.title = "This is a title";
-    self.task.description = "This is a description";
+    var self = this;
+    var task_id = self.$route.params.task_id;
+    var response = axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("http://todoapi.test/api/tasks/" + task_id, {
+      headers: {
+        'Authorization': localStorage.getItem('token')
+      }
+    }).then(function (taskInfo) {
+      self.task.title = taskInfo.data.title;
+      self.task.description = taskInfo.data.description;
+    });
   }
 });
 
@@ -2021,6 +2039,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -2030,7 +2052,23 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   methods: {
     setToDone: function setToDone(todo_id) {
-      alert(todo_id);
+      var self = this;
+      var response = axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('http://todoapi.test/api/tasks/' + todo_id, {
+        _method: "PUT",
+        'status': 1
+      }, {
+        headers: {
+          'Authorization': localStorage.getItem('token')
+        }
+      }).then(function (data) {
+        axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('http://todoapi.test/api/tasks', {
+          headers: {
+            'Authorization': localStorage.getItem('token')
+          }
+        }).then(function (data) {
+          self.todos = data.data;
+        });
+      });
     }
   },
   created: function () {
@@ -3418,28 +3456,6 @@ var render = function() {
         _c("h2", [_vm._v("Edit Task")]),
         _vm._v(" "),
         _c("form", { on: { submit: _vm.onSubmit } }, [
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.task._method,
-                expression: "task._method"
-              }
-            ],
-            staticClass: "form-control",
-            attrs: { type: "text", value: "PUT" },
-            domProps: { value: _vm.task._method },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.task, "_method", $event.target.value)
-              }
-            }
-          }),
-          _vm._v(" "),
           _c("div", { staticClass: "form-group" }, [
             _c("label", { attrs: { for: "" } }, [_vm._v("Title")]),
             _vm._v(" "),
@@ -3505,7 +3521,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "form-group" }, [
       _c("button", { staticClass: "btn btn-primary" }, [
-        _vm._v("\n\t\t\t\t\t\tEdit\n\t\t\t\t\t")
+        _vm._v("\n\t\t\t\t\t\tUpdate\n\t\t\t\t\t")
       ])
     ])
   }
@@ -3559,31 +3575,45 @@ var render = function() {
                   _vm._v(" "),
                   _c("td", [_vm._v(_vm._s(todo.description))]),
                   _vm._v(" "),
-                  _c("td"),
+                  _c("td", [
+                    todo.status == 1
+                      ? _c("span", { staticClass: "badge badge-success" }, [
+                          _vm._v("Done")
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    todo.status == 0
+                      ? _c("span", { staticClass: "badge badge-warning" }, [
+                          _vm._v("Pending")
+                        ])
+                      : _vm._e()
+                  ]),
                   _vm._v(" "),
                   _c(
                     "td",
                     [
-                      _c(
-                        "a",
-                        {
-                          staticClass: "btn btn-success",
-                          attrs: { href: "javascript:void(0)" },
-                          on: {
-                            click: function($event) {
-                              return _vm.setToDone(todo.id)
-                            }
-                          }
-                        },
-                        [_vm._v("\n\t\t\t\t\t\t\t\tDone\n\t\t\t\t\t\t\t")]
-                      ),
+                      todo.status == 0
+                        ? _c(
+                            "a",
+                            {
+                              staticClass: "btn btn-success",
+                              attrs: { href: "javascript:void(0)" },
+                              on: {
+                                click: function($event) {
+                                  return _vm.setToDone(todo.id)
+                                }
+                              }
+                            },
+                            [_vm._v("\n\t\t\t\t\t\t\t\tDone\n\t\t\t\t\t\t\t")]
+                          )
+                        : _vm._e(),
                       _vm._v(" "),
                       _c(
                         "router-link",
                         {
                           staticClass: "btn btn-primary",
                           attrs: {
-                            to: { name: "edit", params: { id: todo.id } }
+                            to: { name: "edit", params: { task_id: todo.id } }
                           }
                         },
                         [_vm._v("\n\t\t\t\t\t\t\t\tEdit\n\t\t\t\t\t\t\t")]
@@ -18669,7 +18699,7 @@ __webpack_require__.r(__webpack_exports__);
     component: _components_Create__WEBPACK_IMPORTED_MODULE_1__["default"],
     name: 'create'
   }, {
-    path: '/edit/:id',
+    path: '/edit/:task_id',
     component: _components_Edit__WEBPACK_IMPORTED_MODULE_2__["default"],
     name: 'edit'
   }]

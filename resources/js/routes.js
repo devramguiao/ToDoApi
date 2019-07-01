@@ -16,7 +16,7 @@ export default {
 			name: 'create'
 		},
 		{
-			path: '/edit/:id',
+			path: '/edit/:task_id',
 			component: Edit,
 			name: 'edit'
 		}

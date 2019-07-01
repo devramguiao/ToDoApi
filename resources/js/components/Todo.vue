@@ -22,13 +22,17 @@
 						<tr v-for='todo in todos'>
 							<td>{{ todo.title }}</td>
 							<td>{{ todo.description }}</td>
-							<td></td>
 							<td>
-								<a href="javascript:void(0)" @click="setToDone(todo.id)" class="btn btn-success">
+								<span v-if="todo.status == 1" class="badge badge-success">Done</span>
+
+								<span v-if="todo.status == 0" class="badge badge-warning">Pending</span>
+							</td>
+							<td>
+								<a href="javascript:void(0)" @click="setToDone(todo.id)" class="btn btn-success" v-if='todo.status == 0'>
 									Done
 								</a>
 
-								<router-link :to="{name: 'edit', params: { id: todo.id }}" class='btn btn-primary'>
+								<router-link :to="{name: 'edit', params: { task_id: todo.id }}" class='btn btn-primary'>
 									Edit
 								</router-link>
 							</td>
@@ -52,7 +56,27 @@
 		methods: {
 			setToDone(todo_id)
 			{
-				alert(todo_id);
+				const self = this;
+
+				const response = axios.post('http://todoapi.test/api/tasks/'+todo_id,
+						{
+							_method: "PUT",
+							'status': 1
+						},
+						{
+							headers: {
+								'Authorization': localStorage.getItem('token')
+							}
+						}
+					).then(function(data) {
+						axios.get('http://todoapi.test/api/tasks', {
+							headers: {
+								'Authorization': localStorage.getItem('token')
+							}
+						}).then(function(data) {
+							self.todos = data.data;
+						});
+					});
 			}
 		},
 		async created()

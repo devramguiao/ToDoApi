@@ -4,7 +4,6 @@
 			<div class="col-md-6 mx-auto">
 				<h2>Edit Task</h2>
 				<form @submit='onSubmit'>
-					<input type="text" v-model='task._method' value="PUT" class="form-control" />
 					<div class="form-group">
 						<label for="">Title</label>
 						<input type="text" v-model='task.title' class="form-control" />
@@ -15,7 +14,7 @@
 					</div>
 					<div class="form-group">
 						<button class="btn btn-primary">
-							Edit
+							Update
 						</button>
 					</div>
 				</form>
@@ -31,25 +30,48 @@
 		data()
 		{
 			return {
-				task: {}
+				task: {
+					_method: "PUT",
+					title: "",
+					description: "",
+				}
 			}
 		},
 		methods: {
 			onSubmit(e)
 			{
-				
+				e.preventDefault();
+
+				const  self = this;
+
+				const task_id = self.$route.params.task_id;
+
+				const response = axios.post("http://todoapi.test/api/tasks/"+task_id, self.task,
+					{
+						headers: {
+							'Authorization': localStorage.getItem('token')
+						}
+					})
+				.then(function(data) {
+					self.$router.push('/');
+				});
 			}
 		},
 		created()
 		{
 			const self = this;
 
-			// to get the parameter id in the URL
-			var task_id = self.$route.params.id;
-
-			// to set value in for data-model binding
-			self.task.title = "This is a title";
-			self.task.description = "This is a description";
+			const task_id = self.$route.params.task_id;
+			
+			const response = axios.get("http://todoapi.test/api/tasks/" + task_id, {
+					headers: {
+						'Authorization': localStorage.getItem('token')
+					}
+				})
+				.then(function(taskInfo) {
+					self.task.title = taskInfo.data.title;
+					self.task.description = taskInfo.data.description;
+				});
 		}
 	}
 </script>
